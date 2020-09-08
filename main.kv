@@ -1,0 +1,112 @@
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import utils kivy.utils
+#:import random random
+
+ScreenManagement:
+        transition: FadeTransition()
+        MainScreen:
+        ReadyScreen:
+        WordScreen
+        DrawingScreen:
+
+<MainScreen>:
+        name: "main"
+        FloatLayout:
+                canvas:
+                        Color:
+                                rgb: utils.get_color_from_hex("#ebecf0")
+                        Rectangle:
+                                size: self.size
+                                pos: self.pos
+                GridLayout:
+                        rows: 1
+                        pos_hint: {"top": 1.2, "left": 0.5}
+                        size_hint: .80, .9
+                        Image:
+                                source: 'images/hi.png'
+                GridLayout:
+                        rows: 2
+                        pos_hint: {"top": .45, "left": 1}
+                        size_hint: 1.1, .3
+                        ImageButton:
+                                source: 'images/best_start.png'
+                                on_release:
+                                        app.root.current = "ready"
+
+<ReadyScreen>:
+        name: "ready"
+        id: ready
+        FloatLayout:
+                canvas:
+                        Color:
+                                rgb: utils.get_color_from_hex("#ebecf0")
+                        Rectangle:
+                                size: self.size
+                                pos: self.pos
+                GridLayout:
+                        rows: 1
+                        pos_hint: {"top": 1, "left": 1}
+                        size_hint: 1.00, 1
+                        ImageButton:
+                                id: readytext
+                                source: "images/best_imready.png"
+                                on_release:
+                                        root.manager
+                                        app.root.current = "word"
+
+
+
+<WordScreen>:
+        name: "word"
+        FloatLayout:
+                canvas:
+                        Color:
+                                rgb: utils.get_color_from_hex("#ebecf0")
+                        Rectangle:
+                                size: self.size
+                                pos: self.pos
+        GridLayout:
+                rows: 1
+                pos_hint: {"top": 1, "left": 1}
+                size_hint: 1.00, 1
+                ImageButton:
+                        source: 'images/best_drawa.png'
+                        on_release:
+                                app.root.current = "draw"
+
+        Label:
+                id: wordlabel
+                font_name: 'fonts/EBGaramond-Bold'
+                font_size: 60
+                pos_hint: {"top": .9, "left": .6}
+                size_hint: 1, 1
+                text: root.random_word()
+                color: 30,130,76,1 #
+
+
+<DrawingScreen>:
+        name: "draw"
+        FloatLayout:
+                canvas:
+                        Color:
+                                rgb: utils.get_color_from_hex("#ebecf0")
+                        Rectangle:
+                                size: self.size
+                                pos: self.pos
+
+        GridLayout:
+                rows: 1
+                Painter:
+                        id: painter
+
+        GridLayout:
+                cols: 2
+                pos_hint: {"top": .27, "left": .1}
+                size_hint: 1, .3
+                ImageButton:
+                        source: 'images/best_nextone3.png'
+                        on_release:
+                                painter.canvas.clear()
+                                root.manager.get_screen("word").ids.wordlabel.text = root.random_word()
+                                app.root.current = "ready"
+
